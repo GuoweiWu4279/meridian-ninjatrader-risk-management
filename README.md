@@ -100,7 +100,7 @@ Each dimension measures a distinct pattern of behavioral deterioration from the 
 | D1 | Revenge Entry | Rapid re-entry after a loss with elevated size; same-direction re-entries weighted more heavily than reversals |
 | D2 | Stop Manipulation | Stop-loss widening in the adverse direction on active losing positions; naked position time accumulation |
 | D3 | Size Spike | Position sizing exceeding declared rules or historical norms, with amplified weight during losing sequences |
-| D4 | Rushed Exit | Exits collapsing earlier than the trader's own historical hold-time distribution for winning trades |
+| D4 | Hold Bias | Holding losing trades significantly longer than winning ones — loss-aversion (cutting losses fast is never penalized) |
 | D5 | Position Overstay | Hold time on losing positions extending past the trader's historical tolerance window |
 | D6 | Rule Violations | Trading outside declared session parameters: time window, instrument, size range, trade count |
 | D7 | Overtrading Pace | Entry frequency accelerating significantly above the trader's own session baseline |
@@ -138,11 +138,11 @@ Guard is an optional enforcement layer (Meridian Guard tier only). Six trigger c
 
 | Level | Name | Behavior |
 |---|---|---|
-| L1 | Alert | Quiet visual notification; does not interrupt order flow |
-| L2 | Acknowledge | Trader must type a pre-written phrase before the next order; phrase is set during calm pre-session state |
-| L3 | Countdown | Mandatory timed pause; cannot be skipped; no new orders during countdown |
-| L4 | Risk Alert Mode | Persistent banner; every new entry requires active confirmation |
-| L5 | Disconnect | Calls NT8's standard broker disconnect API; optional auto-liquidation of open positions |
+| L1 | Notify | Quiet toast notification; does not interrupt order flow |
+| L2 | Risk Alert | Persistent banner; every new entry requires active confirmation |
+| L3 | Acknowledge | Trader must type a pre-written phrase (with optional countdown) before the next order; phrase is set during calm pre-session state |
+| L4 | Trading Pause | New entries blocked (Cancel Orders or Disconnect mode); survives an NT8 restart; optional auto-flatten on pause; cannot be skipped |
+| L5 | Disconnect | Strongest Trading Pause mode; calls NT8's standard broker disconnect API; optional auto-flatten of open positions |
 
 Rules can be password-locked to prevent in-session override.
 
@@ -150,9 +150,9 @@ Rules can be password-locked to prevent in-session override.
 
 ## Data architecture
 
-All Meridian data is stored in XML files on the trader's local machine. There is no cloud backend, no telemetry, no analytics collection, and no crash reporting.
+All Meridian data is stored in XML files on the trader's local machine. There is no cloud backend for product data, no crash reporting, and no third-party analytics.
 
-The only outbound network call Meridian makes is a license key validation call to Whop on startup.
+Meridian makes two outbound requests, both disclosed in the Terms: a license key validation call on startup, and (since v1.5.0) anonymized research records — tied only to a random install identifier, never to the trader's name, credentials, account numbers, or funds; never sold; opt-out available at any time.
 
 Storage includes up to five years of session history: up to 200 executions per session, up to 600 PSI timeline snapshots per session, full behavioral signal history, journal entries, and Composure scores.
 

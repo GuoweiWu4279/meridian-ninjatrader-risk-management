@@ -12,7 +12,7 @@ The integration gives Meridian direct access to NinjaTrader 8's account executio
 
 NinjaTrader 8 fires three primary account-level events that Meridian observes:
 
-**ExecutionUpdate** fires when a fill is confirmed: an entry, exit, or partial fill. This is the primary event for behavioral signal computation. Every D1 (Revenge Entry), D3 (Size Spike), D4 (Rushed Exit), and D7 (Overtrading Pace) signal begins with an ExecutionUpdate event.
+**ExecutionUpdate** fires when a fill is confirmed: an entry, exit, or partial fill. This is the primary event for behavioral signal computation. Every D1 (Revenge Entry), D3 (Size Spike), D4 (Hold Bias), and D7 (Overtrading Pace) signal begins with an ExecutionUpdate event.
 
 **OrderUpdate** fires when an order's state changes: placement, modification, cancellation, or rejection. Stop-loss modifications that underlie D2 (Stop Manipulation) are captured here. The order modification event carries the new stop price; Meridian compares it against the position's entry price and the trader's baseline stop distance distribution to determine whether the modification constitutes a widening on an adverse position.
 
@@ -90,15 +90,15 @@ Each trigger fires once per condition entry, then resets. The edge-trigger desig
 
 Guard responses escalate in friction. The trader assigns each rule to one of five levels:
 
-Level 1 (Alert): A quiet visual notification. Does not interrupt order flow.
+Level 1 (Notify): A quiet visual notification. Does not interrupt order flow.
 
-Level 2 (Acknowledge): The trader must type a pre-written phrase before placing the next order. The phrase is defined during the pre-session configuration, when the trader is calm. It is typed during the triggered state, when the trader may not be. Examples: "I am not ready to trade" or "Check your PSI before the next entry." The friction is the mechanism.
+Level 2 (Risk Alert): A persistent banner appears across the interface. Every new entry requires an active confirmation step before it is placed.
 
-Level 3 (Countdown): A mandatory timed pause. The trader cannot place new orders until the countdown expires. The countdown period is configurable. It cannot be skipped.
+Level 3 (Acknowledge): The trader must type a pre-written phrase — with an optional countdown timer — before placing the next order. The phrase is defined during the pre-session configuration, when the trader is calm. It is typed during the triggered state, when the trader may not be. Examples: "I am not ready to trade" or "Check your PSI before the next entry." The friction is the mechanism.
 
-Level 4 (Risk Alert Mode): A persistent banner appears across the interface. Every new entry requires an active confirmation step before it is placed. This mode remains active until explicitly dismissed or until the session ends.
+Level 4 (Trading Pause): New entries are blocked entirely, in Cancel Orders mode (stay connected, new entry orders auto-cancelled) or Disconnect mode. The pause survives a NinjaTrader restart or crash until its window expires. Orders that close or reduce a position are never blocked.
 
-Level 5 (Disconnect): NinjaTrader's standard broker disconnect API is called. This is the same operation as manually clicking Disconnect in NinjaTrader's interface. The trader's broker connection is terminated. For open positions, Guard can be configured to submit closing orders before disconnecting (auto-liquidation), or to leave open positions under manual management.
+Level 5 (Disconnect): The strongest Trading Pause mode. NinjaTrader's standard broker disconnect API is called — the same operation as manually clicking Disconnect in NinjaTrader's interface. For open positions, Guard can be configured to submit closing orders before disconnecting (auto-liquidation), or to leave open positions under manual management.
 
 Rules can be password-locked to prevent in-session override. The recommended configuration for traders who want the enforcement to hold under pressure: use a password that will not be remembered during a stressed session.
 
@@ -108,7 +108,7 @@ Rules can be password-locked to prevent in-session override. The recommended con
 
 All Meridian data is stored in XML files on the trader's local machine. Session history, behavioral baselines, configuration, journal entries, and PSI timeline snapshots are all local. Retention is up to five years of session history.
 
-The only outbound network request Meridian makes is a license key validation call to Whop on startup. There is no behavioral telemetry, no session data transmission, no crash reporting, and no analytics collection.
+Meridian makes two kinds of outbound requests, both disclosed in the product's Terms: a license key validation call on startup, and (since v1.5.0) anonymized research records — trading activity and computed behavioral signals tied only to a random install identifier, never to the trader's name, credentials, account numbers, or funds. The research contribution is never sold and can be opted out of at any time. There is no crash reporting and no third-party analytics.
 
 This architecture was chosen specifically to support traders in prop firm evaluation environments, where outbound connections from the trading platform are often restricted or prohibited. Meridian operates within these environments without modification.
 

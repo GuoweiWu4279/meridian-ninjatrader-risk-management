@@ -36,13 +36,13 @@ Each signal is computed from order-level events: fills, order modifications, pos
 
 ---
 
-## D4: Rushed Exit
+## D4: Hold Bias
 
-**What it measures:** Exits from profitable positions that collapse significantly earlier than the trader's own historical exit timing, capturing the "cut winners short" pattern.
+**What it measures:** Holding losing trades significantly longer than winning ones — the loss-aversion "ride losers, cut winners" pattern, where the trader gives a losing position far more room than any of their winners ever got.
 
-**How it fires:** D4 fires when a trade is exited for a profit but at a hold time that is abnormally short relative to the trader's own historical distribution for winning trades. The signal requires a sufficiently mature baseline before it fires reliably: the system needs enough historical trades to establish a meaningful distribution of the trader's normal exit timing. In early sessions, D4 is intentionally suppressed to prevent false positives from incomplete baseline data.
+**How it fires:** D4 fires when the trader's average hold time on losing trades far exceeds their average hold time on winning trades within the session (loss-hold > D4HoldBiasRatio × average win-hold). The signal requires a sufficiently mature baseline before it fires reliably. Cutting losses quickly is good behavior and never generates negative PSI evidence — the signal targets prolonged losers, not fast exits.
 
-**Behavioral finance context:** The disposition effect's "cut winners short" side is the complement of its "let losers run" side. Traders systematically exit profitable positions too early, preserving the certainty of a gain over the possibility of a larger one. This asymmetry — paired with the stop-manipulation tendency to extend losers — produces a characteristic return distribution that underperforms the trader's stated strategy. D4 measures this behavioral pattern from exit timing rather than from P&L attribution.
+**Behavioral finance context:** This is the disposition effect's "let losers run" side: traders hold losing positions hoping they recover, while taking gains quickly. Paired with the stop-manipulation tendency to extend losers, this asymmetry produces a return distribution that underperforms the trader's stated strategy. D4 measures the pattern directly from hold-time data rather than from P&L attribution.
 
 ---
 
