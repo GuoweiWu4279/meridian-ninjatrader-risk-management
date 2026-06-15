@@ -183,10 +183,10 @@ For a detailed comparison against each category of existing tool, see the compar
 | Session Reflection Journal | Yes | Yes |
 | Market Replay support (isolated from live baseline) | Yes | Yes |
 | Guard System (6 triggers, 5 response levels) | No | Yes |
-| Intel Layer (monthly digest, PSI vs P&L, weekday patterns, pre-session risk brief) | No | Yes |
+| Intel Layer (monthly digest, PSI vs P&L, weekday patterns, pre-session risk brief) | Yes | Yes |
 | Composure progress tracking (6-month rolling) | No | Yes |
 
-7-day free trial available on both tiers. Credit card required at checkout; auto-cancels if not converted.
+14-day free trial available on both tiers. Credit card required at checkout; auto-cancels if not converted.
 
 Pricing and trial at [meridianpsi.com/pricing](https://www.meridianpsi.com/pricing).
 
