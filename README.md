@@ -139,7 +139,7 @@ Guard is an optional enforcement layer (Meridian Guard tier only). Six trigger c
 | Level | Name | Behavior |
 |---|---|---|
 | L1 | Notify | Quiet toast notification; does not interrupt order flow |
-| L2 | Risk Alert | Persistent banner; every new entry requires active confirmation |
+| L2 | Risk Alert | Persistent banner while the condition holds; non-blocking — it does not gate entries (L3 Acknowledge is the level that blocks the next order) |
 | L3 | Acknowledge | Trader must type a pre-written phrase (with optional countdown) before the next order; phrase is set during calm pre-session state |
 | L4 | Trading Pause | New entries blocked (Cancel Orders or Disconnect mode); survives an NT8 restart; optional auto-flatten on pause; cannot be skipped |
 | L5 | Disconnect | Strongest Trading Pause mode; calls NT8's standard broker disconnect API; optional auto-flatten of open positions |

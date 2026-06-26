@@ -92,7 +92,7 @@ Guard responses escalate in friction. The trader assigns each rule to one of fiv
 
 Level 1 (Notify): A quiet visual notification. Does not interrupt order flow.
 
-Level 2 (Risk Alert): A persistent banner appears across the interface. Every new entry requires an active confirmation step before it is placed.
+Level 2 (Risk Alert): A persistent banner appears across the interface and stays up while the condition holds. It is non-blocking — it keeps the risk in front of you but does not gate entries; Level 3 (Acknowledge) is the level that blocks the next order.
 
 Level 3 (Acknowledge): The trader must type a pre-written phrase — with an optional countdown timer — before placing the next order. The phrase is defined during the pre-session configuration, when the trader is calm. It is typed during the triggered state, when the trader may not be. Examples: "I am not ready to trade" or "Check your PSI before the next entry." The friction is the mechanism.
 
